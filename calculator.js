@@ -24,6 +24,8 @@ const multiplyButton = document.getElementById("multiply");
 const subtractButton = document.getElementById("subtract");
 const addButton = document.getElementById("add");
 const equalsButton = document.getElementById("equals");
+const negateButton = document.getElementById("negate");
+const percentButton = document.getElementById("percent");
 
 const operatorButtons = [clearButton, divideButton, multiplyButton, subtractButton, addButton];
 
@@ -39,26 +41,50 @@ const displayArea = document.getElementById("outputText");
 let displayValue = "0";
 let firstValue = undefined;
 let secondValue = undefined;
+let returnValue = undefined;
 let operatorSelected = undefined;
+let returnedValueDisplayed = false;
+let previousOperation = {
+   operator: undefined,
+   value: undefined
+}
 
 operatorButtons.forEach(operatorButton => {
    operatorButton.addEventListener("click", function(e) {
+      previousOperation.operator = undefined;
+      previousOperation.value = undefined;
       clearSelected();
       this.classList.add("selected");
       operatorSelected = this.id;
-      firstValue = parseFloat(displayValue);
-      displayValue="0";
+      if (!returnedValueDisplayed) {
+         firstValue = parseFloat(displayValue);
+         displayValue="0";
+      }
+      else {
+         displayValue="0";
+      }
    });
 });
 
 equalsButton.addEventListener("click", (e) => {
-   if (!firstValue ||  !operatorSelected) {
+   if (firstValue && previousOperation.operator && previousOperation.value) {
+      returnValue = operate(previousOperation.operator, firstValue, previousOperation.value);
+   }
+   else if (!firstValue ||  !operatorSelected) {
       return;
    }
-   secondValue = parseFloat(displayValue);
-   displayValue = "" + operate(operatorSelected, firstValue, secondValue);
-   displayArea.innerHTML = displayValue;
+   else {
+      secondValue = parseFloat(displayValue);
+      returnValue = operate(operatorSelected, firstValue, secondValue);
+      previousOperation.operator = operatorSelected;
+      previousOperation.value = secondValue;
+   }
+   firstValue = returnValue;
+   displayArea.innerHTML = returnValue;
+
    clearSelected();
+   displayValue = "0"; // not what is shown
+   returnedValueDisplayed = true;
 })
 
 clearButton.addEventListener("click", (e) => {
@@ -72,6 +98,10 @@ clearButton.addEventListener("click", (e) => {
 const updateDisplayValue = function(valueToAdd) {
    if (valueToAdd === '.' && displayValue.includes('.')) {
       return;
+   }
+   if (returnValue) {
+      returnValue = undefined;
+      returnedValueDisplayed = false;
    }
 
    displayValue += valueToAdd;
@@ -96,3 +126,19 @@ for (let i = 0; i <= 9; i++) {
 nums[10].addEventListener("click", (e) => {
    updateDisplayValue('.');
 });
+
+percentButton.addEventListener("click", (e) => {
+   if (returnedValueDisplayed) {
+      firstValue /= 100;
+      displayValue = "" + firstValue;
+   }
+   if (operatorSelected && firstValue) {
+      secondValue = parseFloat(displayValue) / 100;
+      displayValue = "" + secondValue;
+   }
+   else {
+      firstValue = parseFloat(displayValue) / 100;
+      displayValue = "" + firstValue;
+   }
+   displayArea.innerHTML = displayValue;
+})
