@@ -1,0 +1,123 @@
+main {
+   font-family: 'Helvetica Neue';
+   font-size: 30px;
+   font-weight: 350;
+}
+
+.calculator {
+   width: fit-content;
+   padding: 20px;
+   display: grid;
+   grid-template-columns: repeat(4, 60px);
+   grid-template-rows: repeat(8, 60px);
+   grid-gap: 10px;
+   grid-template-areas: 
+      "topSpace topSpace topSpace topSpace"
+      "topSpace topSpace topSpace topSpace"
+      "outputText outputText outputText outputText"
+      "clear negate percent divide"
+      "num7 num8 num9 multiply"
+      "num4 num5 num6 subtract"
+      "num1 num2 num3 add"
+      "num0 num0 decimal equals";
+   background-color: #000001;
+   color: #FFFFFF;
+}
+
+.calculator > div {
+   border-radius: 50%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   transition: background-color .5s;
+}
+
+.calculator > div:hover {
+   transition: background-color 0s;
+}
+
+.selected {
+   transition: background-color .5s !important;
+   transition: color .5s !important;
+   background-color: #FFFFFF !important;
+   color: #FCA00A;
+}
+
+#topSpace {
+   grid-area: topSpace;
+}
+
+#outputText {
+   font-size: 40px;
+   grid-area: outputText;
+   display: block;
+   text-align: right;
+   padding-right: 18px;
+   padding-top: 18px;
+}
+
+#divide {
+   grid-area: divide;
+}
+
+#multiply {
+   grid-area: multiply;
+}
+
+#subtract {
+   grid-area: subtract;
+}
+
+#add {
+   grid-area: add;
+}
+
+#equals {
+   grid-area: equals;
+}
+
+#decimal {
+   grid-area: decimal;
+}
+
+#num0 {
+   grid-area: num0;
+   border-radius: 30px;
+   justify-content: left;
+   padding: 22px;
+}
+
+.primary {
+   background-color: #FCA00A;
+   font-size: 35px;
+   padding-bottom: 9px;
+   padding-right: 1px;
+}
+
+.secondary {
+   background-color: #A4A5A6;
+   color: #000001;
+   font-size: 22px;
+   font-weight: 400;
+}
+
+.num {
+   background-color: #323334;
+   font: outline;
+   transition: background-color .5s;
+}
+
+.num:hover {
+   background-color: #737272;
+   transition: background-color 0s;
+}
+
+.primary:hover {
+   background-color: #FBC68D;
+}
+
+.secondary:hover {
+   background-color: #D8D8D8;
+}
+
+
